@@ -1,53 +1,74 @@
-# vist-recommendation-system
-Recommendations System for Employee Relationship (ER) Managers: To develop a recommendation system that suggests top branches (referred to as "SolIDs" or Branch IDs) to Employee Relationship (ER) Managers based on various features and historical visit data, while considering specific constraints and ensuring the relevance of recommendations.
 
+ Objective:
+Develop a recommendation system for a Top Bank's (Forbes#150) Employee Relationship (ER) Managers that suggests optimal branches to visit in each quarter based on predictive modeling, geographic distances, and shortest path algorithms.
 
-
-Components:
+  Overview:
 
 1. Data Preparation:
-   - Training Data: Contains information about ER Managers, branch details (SolIDs), and historical visit data.
-   - Active Data: Holds information about branches currently active or relevant.
+   - Load Data:
+     - Training Data: Contains details about ER Managers and branch attributes.
+     - Active Data: Lists active branches with ER IDs and names.
 
-2. Model Training:
-   - Random Forest Classifier: Trained using features from the training data to predict the likelihood of recommending a branch (SolID).
-   - Hyperparameter Tuning: Performed using RandomizedSearchCV to find the best model parameters.
+   - Data Cleaning:
+     - Remove duplicates and handle missing values in the active branch dataset.
+
+2. Feature and Data Setup:
+   - Rename Columns: Align column names between datasets for consistency.
+   - Create Placeholder DataFrame: For later use in the recommendation process.
 
 3. Recommendation Generation:
-   - Custom Recommendation Function (`Custom_Recommend_SOLID`): Generates recommendations for each ER Manager based on the trained model.
-   - Top-K Recommendations: Retrieves the top `K` branches based on predicted probabilities.
-   - Validation: Ensures that recommendations are relevant and accurately reflect historical visit data.
+   - Custom Recommendation Function:
+     - Generates top branch recommendations for each ER Manager.
+     - Parameters:
+       - `Top_K`: Number of top recommendations.
+       - `ER_ID`: The ID of the ER Manager.
+       - `Data_DF`: The DataFrame containing training data.
+       - `solid_VRM_ACTIVE_df`: DataFrame with active branches.
 
-4. Post-Processing:
-   - Region Analysis: Identifies the most frequent region from the recommendations for each ER Manager to refine the recommendations.
-   - Final Filtering: Ensures that recommendations match the most common region assigned to the ER Manager.
+4. Recommendation Processing:
+   - Handling Empty Recommendations: Continue only if recommendations are available.
+   - Create Recommendation DataFrame: Format recommendations into a DataFrame with proper columns.
+   - Validation Check: Ensure recommendations meet certain criteria.
+   - Region Analysis: Determine the most frequent region and filter recommendations based on this.
 
-5. Output:
-   - Results: Consolidates the recommendations into a final DataFrame, which is filtered to ensure the relevance and accuracy of the suggestions.
+5. Shortest Path Algorithm Integration:
+   - Distance Calculation:
+     - Calculate Distances: Compute distances between branches using latitude and longitude.
+     - Distance Adjacency Matrix: Construct a matrix of distances between branches.
 
-6. Validation and Final Checks:
-   - Validation Checking (`validation_checking`): Verifies the validity of recommendations against the original data to ensure that branches are allocated correctly.
-   - Region Finalization: Assigns the most frequent region to each ER Manager and filters recommendations accordingly.
+   - Shortest Path Calculation:
+     - Minimum Spanning Tree (MST): Find the optimal route among recommended branches using NetworkX.
+     - Visualize Results: Create visual representations of branch locations and routes using Folium.
 
-#### Code Flow:
+6. Final Processing and Output:
+   - Add Distances to Results:
+     - Compute and integrate distances into the recommendation results.
+     - Improvised Path Calculation: Use an updated method for calculating shortest paths.
 
-1. Loading Data:
-   - Imports data from various sources and prepares it for training and testing.
+   - Update Recommendations:
+     - Visit Order: Determine the order of visits based on the shortest path.
+     - Save Results: Export final recommendations to CSV and JSON formats.
 
-2. Model Training:
-   - Trains a Random Forest model and tunes hyperparameters to optimize performance.
+ Code Breakdown:
 
-3. Generating Recommendations:
-   - Uses the trained model to predict and generate top branch recommendations for each ER Manager.
+1. Loading and Preparing Data:
+   - Load datasets and clean data by removing duplicates and handling missing values.
+   - Align column names for consistency.
 
-4. Processing Results:
-   - Creates DataFrames for recommendations, handles missing values, and ensures data consistency.
+2. Generating Recommendations:
+   - Use a custom recommendation function to suggest top branches for each ER Manager.
+   - Validate and filter recommendations based on region and other criteria.
 
-5. Validation and Filtering:
-   - Validates recommendations against historical data and filters by the most common region to ensure relevance.
+3. Integration of Shortest Path Algorithm:
+   - Calculate distances between branches and construct an adjacency matrix.
+   - Use NetworkX to compute the Minimum Spanning Tree and visualize the optimal path.
 
-6. Final Output:
-   - Merges and filters results to produce a final recommendation list that is ready for use by ER Managers.
+4. Processing Recommendations:
+   - Update recommendation results with distances and visit order.
+   - Merge visit orders and export the results in CSV and JSON formats for further use.
 
-# Summary:
-This project involves creating a recommendation system to suggest top branches (SolIDs) to ER Managers based on historical data and model predictions. It includes data preparation, model training and tuning, recommendation generation, validation, and final filtering to ensure that the suggestions are accurate and relevant to each ER Manager.
+5. Final Steps:
+   - Convert and save the DataFrame with recommendation numbers and final outputs in JSON format.
+
+### Summary:
+The code is designed to create a sophisticated recommendation system for ER Managers by combining predictive modeling with geographic optimization. It includes steps for data preparation, recommendation generation, distance and path calculation, and final result processing. The system ensures that recommendations are both practical and geographically efficient, culminating in a detailed and exportable output.
