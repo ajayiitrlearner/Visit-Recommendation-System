@@ -4,7 +4,7 @@
 # In[ ]:
 
 
-# Intitial Data Sourcing, Cleaning , Modifying steps are removed to secure those APIs and as data is confidentails
+# Intitial Data Sourcing, Cleaning , Modifying steps are removed to secure those APIs and as data is confidential
 
 
 # # Train Test Split
